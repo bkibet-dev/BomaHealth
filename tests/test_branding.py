@@ -1,12 +1,9 @@
-import pytest
-def validate_brand_name(value):
-    pass
+import sys
+from pathlib import Path
 
-def validate_brand_color(value):
-    pass
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from lib.branding import validate_brand_name, validate_brand_color, validate_brand_logo_url
 
-def validate_brand_logo_url(value):
-    pass
 def test_validate_brand_name_valid():
     assert validate_brand_name('BomaHealth') == True
     assert validate_brand_name('') == False

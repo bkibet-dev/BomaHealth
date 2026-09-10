@@ -1,15 +1,8 @@
-import pytest
-def aggregate_household_data(households):
-    pass
+import sys
+from pathlib import Path
 
-def aggregate_referral_stats(referrals):
-    pass
-
-def aggregate_chp_performance(chp_records):
-    pass
-
-def aggregate_by_date_range(data, start_date, end_date):
-    pass
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from lib.data_aggregation import aggregate_household_data, aggregate_referral_stats, aggregate_chp_performance, aggregate_by_date_range
 
 def test_aggregate_household_data_valid():
     data = [

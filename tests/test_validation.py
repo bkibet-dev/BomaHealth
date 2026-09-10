@@ -1,12 +1,8 @@
-import pytest
-def validate_chp_id(value):
-    pass
+import sys
+from pathlib import Path
 
-def validate_household_id(value):
-    pass
-
-def validate_referral_status(value):
-    pass
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from lib.validation import validate_chp_id, validate_household_id, validate_referral_status
 
 def test_validate_chp_id_valid():
     assert validate_chp_id('CHP001') == True
