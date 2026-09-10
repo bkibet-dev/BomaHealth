@@ -31,7 +31,7 @@ if __name__ == "__main__":
                         f"\nName: {u.name}\n"
                         f"Email: {u.email}\n"
                         f"Phone: {u.phone}\n"
-                        f"Active: {u.is_active}"
+                        f"Active: {u.is_active}\n"
                         f"Created: {u.created_date}"
                     )
                 else:
@@ -40,13 +40,11 @@ if __name__ == "__main__":
                 if auth.current_user:
                     old_password = input("Old Password: ")
                     new_password = input("New Password: ")
-                    if auth.current_user.change_password(
+                    success, message = auth.current_user.change_password(
                         old_password,
                         new_password
-                    ):
-                        print("Password changed")
-                    else:
-                        print("Wrong password")
+                    )
+                    print(message)
                 else:
                     print("Not logged in")
             elif c == "5":

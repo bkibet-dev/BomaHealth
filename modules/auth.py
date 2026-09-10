@@ -1,4 +1,4 @@
-from supervisor import Supervisor
+from .supervisor import Supervisor
 
 class Auth:
     def __init__(self):
