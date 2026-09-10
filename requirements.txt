@@ -22,3 +22,5 @@ shellingham==1.5.4
 typer==0.27.2
 urllib3==2.7.0
 virtualenv==21.7.7
+MarkupSafe==3.0.3
+Werkzeug==3.1.8
