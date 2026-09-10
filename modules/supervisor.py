@@ -13,6 +13,8 @@ class Supervisor:
         return check_password_hash(self._password, password)
     def change_password(self, old, new):
         if not self.verify_password(old):
-            return False
+            return False, "Wrong old password"
+        if len(new) < 6:
+            return False, "New password must be at least 6 characters"
         self._password = generate_password_hash(new)
-        return True
+        return True, "Password changed successfully"

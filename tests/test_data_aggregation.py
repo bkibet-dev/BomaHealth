@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from models.data_aggregation import aggregate_household_data, aggregate_referral_stats, aggregate_chp_performance, aggregate_by_date_range
+from modules.data_aggregation import aggregate_household_data, aggregate_referral_stats, aggregate_chp_performance, aggregate_by_date_range
 
 def test_aggregate_household_data_valid():
     data = [

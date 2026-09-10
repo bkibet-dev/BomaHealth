@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from models.branding import validate_brand_name, validate_brand_color, validate_brand_logo_url
+from modules.branding import validate_brand_name, validate_brand_color, validate_brand_logo_url
 
 def test_validate_brand_name_valid():
     assert validate_brand_name('BomaHealth') == True

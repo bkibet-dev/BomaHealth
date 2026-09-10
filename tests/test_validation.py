@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from models.validation import validate_chp_id, validate_household_id, validate_referral_status
+from modules.validation import validate_chp_id, validate_household_id, validate_referral_status
 
 def test_validate_chp_id_valid():
     assert validate_chp_id('CHP001') == True
