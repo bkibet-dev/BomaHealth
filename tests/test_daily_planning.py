@@ -10,8 +10,7 @@ def make_chp():
 def test_overdue_sorted_before_pending():
     chp = make_chp()
     a = Household("A", "H001", chp_id=1)
-    b = Household("B", "H002", chp_id=1,
-                   last_visit_date=date.today() - timedelta(days=10))
+    b = Household("B", "H002", chp_id=1, last_visit_date=date.today() - timedelta(days=10))
     b.status = "visited"
     chp.add_household(a)
     chp.add_household(b)
@@ -52,3 +51,12 @@ def test_show_daily_planning_prints_list(capsys):
     show_daily_planning(chp)
     captured = capsys.readouterr()
     assert "Wanjiku" in captured.out
+
+def test_show_daily_planning_denies_wrong_role(capsys):
+    class FakeSupervisor:
+        role = "supervisor"
+        name = "Fake Sup"
+        households = []
+    show_daily_planning(FakeSupervisor())
+    captured = capsys.readouterr()
+    assert "Access denied" in captured.out
