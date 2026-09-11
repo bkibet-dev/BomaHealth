@@ -12,7 +12,7 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
     if args.command == "daily-plan":
-        chp = current_chp
+        chp = CHP()
         show_daily_planning(chp)
     else:
         parser.print_help()
