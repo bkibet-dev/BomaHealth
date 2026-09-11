@@ -1,3 +1,4 @@
+import os
 from datetime import date, timedelta
 from models.household import Household
 
@@ -44,4 +45,31 @@ def test_get_all_people_via_person():
     from models.person import Person
     Person.all_people = []
     p = Person("Test", 1, "chp")
-    assert Person.get_all_people() == [p]    
+    assert Person.get_all_people() == [p]
+
+def test_save_to_file_creates_json(tmp_path):
+    Household.all_households = []
+    h = Household("Wanjiku", "H001", chp_id=1)
+    filepath = tmp_path / "households.json"
+    Household.save_to_file(filepath=str(filepath))
+    assert os.path.exists(filepath)
+
+def test_load_from_file_restores_households(tmp_path):
+    Household.all_households = []
+    h = Household("Wanjiku", "H001", chp_id=1)
+    h.mark_visited()
+    filepath = tmp_path / "households.json"
+    Household.save_to_file(filepath=str(filepath))
+
+    Household.all_households = []
+    Household.load_from_file(filepath=str(filepath))
+    loaded = Household.get_all_households()
+    assert len(loaded) == 1
+    assert loaded[0].name == "Wanjiku"
+    assert loaded[0].status == "visited"
+
+def test_load_from_file_missing_file_does_not_crash(tmp_path):
+    Household.all_households = []
+    filepath = tmp_path / "does_not_exist.json"
+    Household.load_from_file(filepath=str(filepath))
+    assert Household.get_all_households() == []

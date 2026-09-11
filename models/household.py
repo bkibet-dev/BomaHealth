@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 class Household:
@@ -35,6 +36,38 @@ class Household:
 
     def reassign(self, new_chp_id):
         self.chp_id = new_chp_id
+
+    @classmethod
+    def save_to_file(cls, filepath="data/households.json"):
+        data = []
+        for h in cls.all_households:
+            data.append({
+                "name": h.name,
+                "household_no": h.household_no,
+                "chp_id": h.chp_id,
+                "last_visit_date": h.last_visit_date.isoformat() if h.last_visit_date else None,
+                "status": h.status,
+                "priority": h.priority,
+            })
+        with open(filepath, "w") as f:
+            json.dump(data, f, indent=2)
+
+    @classmethod
+    def load_from_file(cls, filepath="data/households.json"):
+        try:
+            with open(filepath, "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            return
+        except json.JSONDecodeError:
+            return
+        cls.all_households = []
+        for record in data:
+            h = cls(record["name"], record["household_no"], record["chp_id"])
+            h.status = record["status"]
+            h.priority = record["priority"]
+            if record["last_visit_date"]:
+                h.last_visit_date = date.fromisoformat(record["last_visit_date"])
 
 if __name__ == "__main__":
     h1 = Household("Wanjiku", "H001", chp_id=1)
