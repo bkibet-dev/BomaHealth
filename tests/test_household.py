@@ -21,7 +21,6 @@ def test_becomes_overdue_after_threshold():
     assert h.status == "overdue"
     assert h.priority is True
 
-
 def test_recently_visited_not_overdue():
     recent = date.today() - timedelta(days=1)
     h = Household("Wanjiku", "H004", chp_id=1, last_visit_date=recent)
