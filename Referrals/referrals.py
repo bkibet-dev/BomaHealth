@@ -1,6 +1,6 @@
-import sqlite3
+from datetime import datetime
 
-from db import get_connection
+from store import JsonStore
 
 
 class ReferralResult:
@@ -13,60 +13,51 @@ class ReferralResult:
         self.created_at = created_at
 
     @classmethod
-    def _from_row(cls, row):
+    def _from_dict(cls, referral_id, d):
         return cls(
-            referral_id=row["referral_id"],
-            chp_id=row["chp_id"],
-            household_id=row["household_id"],
-            reason=row["reason"],
-            status=row["status"],
-            created_at=row["created_at"],
+            referral_id=referral_id,
+            chp_id=d["chp_id"],
+            household_id=d["household_id"],
+            reason=d.get("reason"),
+            status=d["status"],
+            created_at=d["created_at"],
         )
 
 
 class ReferralService:
-    def __init__(self, db_path):
-        self.db_path = db_path
+    def __init__(self, json_path):
+        self.store = JsonStore(json_path)
 
     def create_referral(self, referral_id, chp_id, household_id, reason=None):
         self._validate(referral_id, chp_id, household_id)
 
-        conn = get_connection(self.db_path)
+        record = {
+            "chp_id": chp_id,
+            "household_id": household_id,
+            "reason": reason,
+            "status": "open",
+            "created_at": datetime.now().isoformat(),
+        }
+
         try:
-            conn.execute(
-                "INSERT INTO referrals (referral_id, chp_id, household_id, reason) "
-                "VALUES (?, ?, ?, ?)",
-                (referral_id, chp_id, household_id, reason),
-            )
-            conn.commit()
-        except sqlite3.IntegrityError as e:
+            self.store.add_new(referral_id, record)
+        except ValueError as e:
             raise ValueError(f"Referral {referral_id} already exists") from e
-        finally:
-            conn.close()
 
         return self.get_referral(referral_id)
 
     def get_referral(self, referral_id):
-        conn = get_connection(self.db_path)
-        try:
-            row = conn.execute(
-                "SELECT * FROM referrals WHERE referral_id = ?", (referral_id,)
-            ).fetchone()
-        finally:
-            conn.close()
-
-        return ReferralResult._from_row(row) if row else None
+        record = self.store.get(referral_id)
+        return ReferralResult._from_dict(referral_id, record) if record else None
 
     def list_referrals_for_chp(self, chp_id):
-        conn = get_connection(self.db_path)
-        try:
-            rows = conn.execute(
-                "SELECT * FROM referrals WHERE chp_id = ?", (chp_id,)
-            ).fetchall()
-        finally:
-            conn.close()
-
-        return [ReferralResult._from_row(row) for row in rows]
+        all_referrals = self.store.get_all()
+        # comprehension, per the OOP-tricks requirement
+        return [
+            ReferralResult._from_dict(rid, r)
+            for rid, r in all_referrals.items()
+            if r["chp_id"] == chp_id
+        ]
 
     def _validate(self, referral_id, chp_id, household_id):
         if not referral_id or not referral_id.strip():
