@@ -1,5 +1,30 @@
 {
-    "supervisors": [],
-    "visits": [],
-    "referrals": []
+  "supervisors": [
+    {
+      "name": "John",
+      "email": "john@example.com",
+      "phone": "0712345678",
+      "password_hash": "scrypt:32768:8:1$D4aUjJttOidM1Byw$a84256a8d4a40d9a79c41b262daf056415766f8b5f482a2ae4758efb3ad76dd3cb1512cfa183765b975515997d4dbca80263f4cb66e58cf22a807e1c41eaf17e"
+    },
+    {
+      "name": "John",
+      "email": "login@test.com",
+      "phone": "0712345678",
+      "password_hash": "scrypt:32768:8:1$T1iyhYvKMLg1cTSN$174738762b2a4bd2334b709c1ea7be9ed1ddf641682963980f4a1af75228ed267383751c2ff568f9d189e305dafc1b20a33d917e24e73a4722e5fed6719efb88"
+    },
+    {
+      "name": "John",
+      "email": "logout@test.com",
+      "phone": "0712345678",
+      "password_hash": "scrypt:32768:8:1$zLNLXGBZlM9m2mtX$8288776e49069b350f77371664ecfc8f47d81a715ca0e532592fb0e7566e9668d26377f6191db55da409d2252deba9c5cb8725cb488b7a089f03ec3eea2e7419"
+    },
+    {
+      "name": "John",
+      "email": "inactive@test.com",
+      "phone": "0712345678",
+      "password_hash": "scrypt:32768:8:1$afeLGHe3lhU5z1ZZ$e69d9c1e1929145cddaf648180c4b095634d3ec89d69a8ab024ecc940a75d03065630f5e792059a7b75a2087ceed0be22ac91875d8331b061a3b103b7d345850"
+    }
+  ],
+  "visits": [],
+  "referrals": []
 }
