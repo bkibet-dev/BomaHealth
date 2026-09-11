@@ -4,6 +4,10 @@ from modules.supervisor_dashboard import SupervisorDashboard
 from modules.chp_visit import CHPVisit
 
 if __name__ == "__main__":
+    print(" BOMAHEALTH")
+    print(" Community Health Management System")
+    print("Welcome to BomaHealth!")
+    print("Please register or login to continue.")
     auth = Auth()
     integration = Integration()
     dashboard = SupervisorDashboard(integration)

@@ -1,4 +1,4 @@
-from .integration import Integration
+from modules.integration import Integration
 
 class SupervisorDashboard:
     def __init__(self, integration):
