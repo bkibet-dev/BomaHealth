@@ -1,7 +1,7 @@
 import pytest
 
 from notifications import NotificationService
-from referrals import ReferralService
+from Referrals import ReferralService
 
 
 @pytest.fixture
