@@ -39,3 +39,9 @@ def test_get_households_for_chp():
     h2 = Household("B", "H007", chp_id=6)
     result = Household.get_households_for_chp(5)
     assert result == [h1]
+
+def test_get_all_people_via_person():
+    from models.person import Person
+    Person.all_people = []
+    p = Person("Test", 1, "chp")
+    assert Person.get_all_people() == [p]    
