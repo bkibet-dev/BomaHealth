@@ -1,4 +1,6 @@
 from modules.integration import Integration
+from models.referral import Referral
+
 
 class SupervisorDashboard:
     def __init__(self, integration):
@@ -17,28 +19,36 @@ class SupervisorDashboard:
                 f"Date: {visit.visit_date}\n"
                 f"Notes: {visit.notes}"
             )
+
     def show_referrals(self):
-        referrals = self.integration.get_referrals()
+        referrals = Referral.get_all_referrals()
         if not referrals:
             print("No referrals found.")
             return
         for referral in referrals:
             print(
-                f"\nReferral ID: {referral['referral_id']}\n"
-                f"Referred To: {referral['referred_to']}\n"
-                f"Reason: {referral['reason']}\n"
-                f"Status: {referral['status']}"
+                f"\nReferral ID: {referral.referral_id}\n"
+                f"Household: {referral.household_id}\n"
+                f"Reason: {referral.reason}\n"
+                f"Status: {referral.status}"
             )
+
     def sync(self, chp_visits):
         success, message = self.integration.sync_visits(chp_visits)
         print(message)
         return success
-    def update_referral(self, visit_id, status):
-        visit = self.integration.visits.get(visit_id)
 
-        if not visit:
-            print("Visit not found.")
+    def update_referral(self, referral_id, status):
+        referral = Referral.get_referral(referral_id)
+        if not referral:
+            print("Referral not found.")
             return False
-        success, message = visit.update_referral_status(status)
-        print(message)
-        return success
+        if status == "resolved":
+            referral.resolve()
+        elif status == "cancelled":
+            referral.cancel()
+        else:
+            print("Invalid referral status")
+            return False
+        print("Referral status updated successfully")
+        return True

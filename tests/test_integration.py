@@ -1,5 +1,15 @@
+import pytest
 from modules.integration import Integration
 from modules.chp_visit import CHPVisit
+from models.referral import Referral
+
+
+@pytest.fixture(autouse=True)
+def reset_referrals():
+    Referral.all_referrals = []
+    yield
+    Referral.all_referrals = []
+
 
 def test_sync_visit():
     integration = Integration()
@@ -7,24 +17,24 @@ def test_sync_visit():
     success, message = integration.sync_visits([visit])
     assert success is True
     assert len(integration.get_visits()) == 1
+
+
 def test_no_duplicate_visits():
     integration = Integration()
     visit = CHPVisit("V001", "CHP01", "C001")
     integration.sync_visits([visit])
     integration.sync_visits([visit])
     assert len(integration.get_visits()) == 1
-def test_get_referrals():
+
+
+def test_get_referrals_returns_referral_model_records():
+    Referral.create_referral(referral_id="R001", chp_id="CHP01", household_id="H001")
     integration = Integration()
-    visit = CHPVisit("V001", "CHP01", "C001")
-    visit.flag_referral(
-        "R001",
-        "Hospital",
-        "Further assessment"
-    )
-    integration.sync_visits([visit])
     referrals = integration.get_referrals()
     assert len(referrals) == 1
-    assert referrals[0]["referral_id"] == "R001"
+    assert referrals[0].referral_id == "R001"
+
+
 def test_update_existing_visit():
     integration = Integration()
     visit1 = CHPVisit("V001", "CHP01", "C001")

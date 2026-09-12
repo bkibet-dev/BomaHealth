@@ -1,6 +1,3 @@
-"""CLI functions for registration/login, mirrors the pattern in
-cli/referrals.py and cli/notifications.py."""
-
 from modules.auth import Auth
 
 

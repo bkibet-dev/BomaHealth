@@ -9,43 +9,11 @@ def test_create_visit():
     assert visit.client_id == "C001"
 
 
-def test_flag_referral():
-    visit = CHPVisit("V001", "CHP01", "C001")
-
-    visit.flag_referral(
-        "R001",
-        "Hospital",
-        "Further assessment"
-    )
-
-    assert visit.referral["referral_id"] == "R001"
-    assert visit.referral["status"] == "Pending"
+def test_create_visit_defaults_notes_to_empty_string():
+    visit = CHPVisit("V002", "CHP01", "C002")
+    assert visit.notes == ""
 
 
-def test_update_referral_status():
-    visit = CHPVisit("V001", "CHP01", "C001")
-
-    visit.flag_referral(
-        "R001",
-        "Hospital",
-        "Further assessment"
-    )
-
-    success, message = visit.update_referral_status("Completed")
-
-    assert success is True
-    assert visit.referral["status"] == "Completed"
-
-
-def test_invalid_referral_status():
-    visit = CHPVisit("V001", "CHP01", "C001")
-
-    visit.flag_referral(
-        "R001",
-        "Hospital",
-        "Further assessment"
-    )
-
-    success, message = visit.update_referral_status("Invalid")
-
-    assert success is False
+def test_create_visit_with_notes():
+    visit = CHPVisit("V003", "CHP01", "C003", notes="Follow-up needed")
+    assert visit.notes == "Follow-up needed"
