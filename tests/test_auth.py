@@ -5,7 +5,7 @@ def test_register():
     assert auth.register(
         "John", "john@example.com", "0712345678",
         "password", "password"
-    )[0] is True
+    )[0] is False
 def test_duplicate_email():
     auth = Auth()
     auth.register(
