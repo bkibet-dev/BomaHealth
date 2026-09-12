@@ -4,7 +4,3 @@ __pycache__/
 .pytest_cache/
 .coverage
 data/*.json
-data/*.json
-__pycache__/
-*.pyc
-.coverage
